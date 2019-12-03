@@ -1,0 +1,34 @@
+{
+  "name": "express_api",
+  "version": "1.0.0",
+  "description": "practice for express backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/www.js",
+    "test": "./node_modules/.bin/mocha ./api/authentication/auth.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slowlife7/express_api.git"
+  },
+  "author": "slowlife7",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slowlife7/express_api/issues"
+  },
+  "homepage": "https://github.com/slowlife7/express_api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mocha": "^6.2.2",
+    "mongoose": "^5.7.13",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.1",
+    "path": "^0.12.7",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
+  }
+}
