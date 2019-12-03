@@ -5,6 +5,7 @@ const flash = require("connect-flash");
 const passport = require('passport');
 const auth  = require('./api/authentication');
 const app = express();
+require('dotenv').config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

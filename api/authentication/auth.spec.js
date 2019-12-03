@@ -7,7 +7,7 @@ const app = require("../../app");
 
 describe("POST /login", () => {
   before((done) => {
-    const db = mongoose.connect('mongodb://rasgo.iptime.org:27017/authentication', { useNewUrlParser: true,  useUnifiedTopology: true});
+    const db = mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`, { useNewUrlParser: true,  useUnifiedTopology: true});
     done();
   });
 
