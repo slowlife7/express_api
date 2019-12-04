@@ -1,4 +1,5 @@
 const Post = require("../../model/Post");
+const Category = require("../../model/Category");
 
 const show = (req, res) => {
   let { skip = 0, limit = 10, sort } = req.query;
@@ -41,7 +42,51 @@ const showSpecific = (req, res) => {
     });
 };
 
+const create = (req, res) => {
+  const post = new Post(req.body);
+  post.save(err => {
+    if (err) {
+      return res.status(500).end();
+    }
+    
+    Category.findOne({title: req.body.category})
+      .then(category => {
+        if (!category) {
+          const category = new Category({
+            title: req.body.category,
+            posts: [post.id]
+          });
+          category.save(err => {
+            if (err) {
+              return res.status(500).end();
+            }
+          })
+          return res.json({
+              title: post.title,
+              content: post.content,
+              author: post.author,
+              category: post.category
+            })
+        } else {
+          category.posts.push(post.id);
+          category.save(err => {
+            if (err) {
+              return res.status(500).end();
+            }
+            return res.json({
+              title: post.title,
+              content: post.content,
+              author: post.author,
+              category: post.category
+            })
+          })
+        }
+      })
+  })
+}
+
 module.exports = {
   show,
-  showSpecific
+  showSpecific,
+  create
 };

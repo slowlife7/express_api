@@ -102,3 +102,40 @@ describe("GET /post/:post_id", () => {
     });
   });
 });
+
+describe("POST /post", () => {
+  before(done => {
+    mongoose.Promise = global.Promise;
+    const db = mongoose.connect(
+      `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`,
+      { useNewUrlParser: true, useUnifiedTopology: true }
+    );
+    done();
+  });
+
+  after(done => {
+    mongoose.connection.close();
+    done();
+  });
+  describe("성공", () => {
+    it("생성된 post를 반환한다.", done => {
+      request(app)
+        .post("/post")
+        .send({
+          title: 'test1',
+          content: 'this is test',
+          author: 'herry',
+          category: 'javascript'
+        })
+        .expect(200)
+        .end((err,res) => {
+          if (err) return done(err);
+          res.body.should.have.property('title');
+          res.body.should.have.property('content');
+          res.body.should.have.property('author');
+          res.body.should.have.property('category');
+          done();
+        })
+    })
+  });
+})

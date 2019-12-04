@@ -4,6 +4,7 @@ const path = require("path");
 const passport = require("passport");
 const auth = require("./api/authentication");
 const post = require("./api/post");
+const category = require("./api/category");
 const app = express();
 require("dotenv").config();
 
@@ -22,6 +23,7 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/auth", auth);
 app.use("/post", post);
+app.use("/category", category);
 
 const User = require("./model/User");
 passport.use(User.createStrategy());

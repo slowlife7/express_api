@@ -4,5 +4,6 @@ const router = express.Router();
 
 router.get("/", post.show);
 router.get("/:post_id", post.showSpecific);
+router.post("/", post.create);
 
 module.exports = router;
