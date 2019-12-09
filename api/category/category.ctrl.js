@@ -1,6 +1,14 @@
 const Category = require("../../model/Category");
 
 const show = (req, res) => {
+  Category.find({}, { __v: false, posts: false })
+    .then(docs => {
+      return res.json(docs);
+    })
+    .catch(err => {});
+};
+
+const showByTitle = (req, res) => {
   const { title } = req.params;
   if (!title) {
     return res.status(400).end();
@@ -14,17 +22,18 @@ const show = (req, res) => {
     return res.status(400).end();
   }
 
-  Category.findOne( {title} )
+  Category.findOne({ title })
     .populate({
-      path:'posts',
-      select: '-__v -comments -category -content',
-      options: { skip, limit}
+      path: "posts",
+      select: "-__v -comments -category -content",
+      options: { skip, limit }
     })
     .then(posts => {
       res.json(posts);
-    })
-}
+    });
+};
 
 module.exports = {
-  show
-}
+  show,
+  showByTitle
+};

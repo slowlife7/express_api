@@ -42,51 +42,73 @@ const showSpecific = (req, res) => {
     });
 };
 
+const showCommentById = (req, res) => {
+  const { post_id } = req.params;
+  Post.findById(post_id)
+    .then(docs => {
+      if (!docs) {
+        return res.status(404).end();
+      }
+      return res.json(docs.comments);
+    })
+    .catch(err => {
+      if (err.name === "CastError") {
+        return res.status(404).end();
+      }
+      return res.status(500).end();
+    });
+};
+
 const create = (req, res) => {
   const post = new Post(req.body);
   post.save(err => {
     if (err) {
       return res.status(500).end();
     }
-    
-    Category.findOne({title: req.body.category})
-      .then(category => {
-        if (!category) {
-          const category = new Category({
-            title: req.body.category,
-            posts: [post.id]
+
+    Category.findOne({ title: req.body.category }).then(category => {
+      if (!category) {
+        const category = new Category({
+          title: req.body.category,
+          posts: [post.id]
+        });
+        category.save(err => {
+          if (err) {
+            return res.status(500).end();
+          }
+        });
+
+        // category.addPostId(post.id);
+
+        return res.status(201).json({
+          _id: post.id,
+          title: post.title,
+          content: post.content,
+          author: post.author,
+          category: post.category
+        });
+      } else {
+        category.posts.push(post.id);
+        category.save(err => {
+          if (err) {
+            return res.status(500).end();
+          }
+          return res.status(201).json({
+            _id: post.id,
+            title: post.title,
+            content: post.content,
+            author: post.author,
+            category: post.category
           });
-          category.save(err => {
-            if (err) {
-              return res.status(500).end();
-            }
-          })
-          return res.json({
-              title: post.title,
-              content: post.content,
-              author: post.author,
-              category: post.category
-            })
-        } else {
-          category.posts.push(post.id);
-          category.save(err => {
-            if (err) {
-              return res.status(500).end();
-            }
-            return res.json({
-              title: post.title,
-              content: post.content,
-              author: post.author,
-              category: post.category
-            })
-          })
-        }
-      })
-  })
-}
+        });
+      }
+    });
+  });
+};
 
 module.exports = {
   show,
   showSpecific,
+  showCommentById,
   create
 };
