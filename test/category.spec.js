@@ -1,3 +1,4 @@
+
 const request = require("supertest");
 const mongoose = require("mongoose");
 const app = require("../app");
@@ -92,7 +93,6 @@ describe("CATEGORY API TEST", () => {
           .expect(200)
           .end((err, res) => {
             if (err) return done(err);
-            console.log(res.body);
             res.body.posts.should.be.instanceof(Array);
             done();
           });
@@ -107,6 +107,82 @@ describe("CATEGORY API TEST", () => {
             res.body.posts.should.be.instanceof(Array);
             done();
           });
+      });
+    });
+    describe("실패", () => {
+      it("해당 카테고리가 존재하지 않는다. 404 반환", done => {
+        request(app)
+          .get("/category/herry")
+          .expect(404)
+          .end(done);
+      });
+    });
+  });
+
+  describe("POST /category", () => {
+    describe("성공", () => {
+      let category_id = "";
+
+      afterEach(done => {
+        Category.deleteOne({ _id: category_id })
+          .then(result => {
+            done();
+          })
+          .catch(err => {
+            done(err);
+          });
+      });
+
+      it("상태코드 201 및 추가된 category 정보를 반환한다.", done => {
+        request(app)
+          .post("/category")
+          .expect(201)
+          .send({
+            title: "test123127"
+          })
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            res.body.should.have.property("title");
+            res.body.should.have.property("id");
+            category_id = res.body.id;
+            done();
+          });
+      });
+    });
+    describe("실패", () => {
+      let category_id = "";
+      beforeEach(done => {
+        const category = new Category({
+          title: "test1231249",
+          posts: []
+        });
+        category.save(err => {
+          if (err) {
+            return done(err);
+          }
+          category_id = category.id;
+          done();
+        });
+      });
+      afterEach(done => {
+        Category.deleteOne({ _id: category_id })
+          .then(result => {
+            done();
+          })
+          .catch(err => {
+            done(err);
+          });
+      });
+      it("이미 존재하는 경우 409 반환한다.", done => {
+        request(app)
+          .post("/category")
+          .expect(409)
+          .send({
+            title: "test1231249"
+          })
+          .end(done);
       });
     });
   });

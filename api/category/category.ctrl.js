@@ -1,3 +1,4 @@
+
 const Category = require("../../model/Category");
 
 const show = (req, res) => {
@@ -29,11 +30,41 @@ const showByTitle = (req, res) => {
       options: { skip, limit }
     })
     .then(posts => {
+      if (!posts) {
+        return res.status(404).end();
+      }
       res.json(posts);
     });
 };
 
+const create = (req, res, next) => {
+  const { title } = req.body;
+  if (!title) {
+    return res.status(400).end();
+  }
+
+  Category.exists({ title }).then(result => {
+    if (result) {
+      return res.status(409).end();
+    }
+    const category = new Category({
+      title,
+      posts: []
+    });
+    category.save(err => {
+      if (err) {
+        return res.status(500).end();
+      }
+      return res.status(201).json({
+        title: category.title,
+        id: category.id
+      });
+    });
+  });
+};
+
 module.exports = {
   show,
-  showByTitle
+  showByTitle,
+  create
 };

@@ -22,37 +22,8 @@ const Post = new Schema(
   }
 );
 
-Post.pre("save", function(next) {
-  const { category } = this;
-  Category.updateOne({ title: category }, { $push: { posts: this._id } })
-    .then(doc => {
-      if (!doc) {
-        return next(err);
-      }
-      next();
-    })
-    .catch(err => {
-      next(err);
-    });
-});
-
-Post.pre("remove", function(next) {
-  const { category } = this;
-  Category.updateOne({ title: category }, { $pull: { posts: this._id } })
-    .then(doc => {
-      if (!doc) {
-        return next(err);
-      }
-      next();
-    })
-    .catch(err => {
-      next(err);
-    });
-});
-
 Post.pre("deleteOne", function(next) {
   const { category } = this;
-  console.log("deleteOne!!!");
   Category.updateOne({ title: category }, { $pull: { posts: this._id } })
     .then(doc => {
       if (!doc) {
@@ -65,15 +36,5 @@ Post.pre("deleteOne", function(next) {
     });
 });
 
-Post.statics.removePostById = function(post_id, cb) {
-  return this.findById(post_id).then(doc => {
-    doc.remove(err => {
-      if (err) {
-        return cb(err, null);
-      }
-      return cb(null, "success");
-    });
-  });
-};
-
 module.exports = mongoose.model("Post", Post);
+
