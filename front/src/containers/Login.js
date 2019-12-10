@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 const Login = ({handleSubmit, handleChange, userid, password}) => {
   return (
@@ -22,7 +23,7 @@ class LoginContainer extends Component {
     this.state = {
       userid: "",
       password: "",
-      message: ""
+      message: "",
     };
   }
 
@@ -42,13 +43,17 @@ class LoginContainer extends Component {
   }
 
   render() {
+    console.log(this.props.authorized);
     return (
+      (!this.props.authorized)? 
       <Login 
         userid={this.state.userid}
         password={this.state.password}
         handleChange={this.handleChange} 
         handleSubmit={this.handleSubmit} 
       />
+      :
+      <Redirect to="/"/>
     )
   }
 }

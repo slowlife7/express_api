@@ -3,15 +3,15 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Nav = styled.nav`
-flex-basis: 150px;
-flex-shrink: 0;
-border-right: 1px solid #cccccc;
-& a {
-  text-decoration: none;
-}
-& li {
-  list-style: none;
-}
+  flex-basis: 150px;
+  flex-shrink: 0;
+  border-right: 1px solid #cccccc;
+  & a {
+    text-decoration: none;
+  }
+  & li {
+    list-style: none;
+  }
 `;
 
 const NavContainer = (props) => (

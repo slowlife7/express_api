@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { BrowserRouter as Router, Redirect } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import * as Container from '../containers';
 
 class WrapperComponent extends Component {
@@ -8,20 +8,46 @@ class WrapperComponent extends Component {
     super(props);
     this.state = {
       userid: "",
-      password: ""
+      password: "",
+      authorized: false
     }
   }
 
   handleSubmit = e => {
-    this.setState({
-      userid: e
-    });
+    if ( e !== "") {
+      this.setState({
+        authorized: true
+      })
+    }
   }
 
   render() {
+    const loginRoute = {
+      title: 'login',
+      path: '/login',
+      main: () => (
+        <Container.Login 
+          handleSubmit={this.handleSubmit} 
+          authorized={this.state.authorized}
+        /> 
+      )
+    };
 
-    const routes = {
-      sidebar: [
+    const signupRoute = {
+      title: 'signup',
+      path: '/signup',
+      main: () => <div>Signup</div>
+    };
+
+    const logoutRoute = {
+      title: 'logout',
+      path: '/logout',
+      main: () => (
+        <div>Logout</div>
+      )
+    }
+   
+    const routes = [
         {
           exact: true,
           path: '/',
@@ -41,35 +67,23 @@ class WrapperComponent extends Component {
           title: 'javascript',
           path: '/javascript',
           main: () => <div>javascript</div>
-        }
-      ],
-      user:[
-        {
-          title: 'login',
-          path: '/login',
-          main: () => (
-            (this.state.userid === "") ?
-            <Container.Login 
-              handleSubmit={this.handleSubmit} 
-            /> :
-            <Redirect to="/" />
-          )
         },
-        {
-          title: 'signup',
-          path: '/signup',
-          main: () => <div>Signup</div>
-        }
-      ]
-    };
-    const routesArray = [...routes.sidebar, ...routes.user];
+        loginRoute,
+        signupRoute,
+        logoutRoute
+    ];
+
     console.log(this.state.userid);
     return (
       <Fragment>
         <Router>
           <Container.Wrapper>
-            <Container.Header user={routes.user}/>
-            <Container.Section sidebar={routes.sidebar} routes={routesArray}/>
+            <Container.Header 
+              user={
+                (this.state.authorized)? [logoutRoute] : [loginRoute, signupRoute]
+              }
+            />
+            <Container.Section sidebar={routes.slice(0,4)} routes={routes}/>
             <Container.Footer/>
           </Container.Wrapper>
         </Router>
