@@ -23,10 +23,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", index);
+
 app.use("/auth", auth);
 app.use("/post", post);
 app.use("/category", category);
+app.use("/index", index);
 
 const User = require("./model/User");
 passport.use(User.createStrategy());

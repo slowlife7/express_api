@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Redirect } from "react-router-dom";
 import  axios from 'axios';
 
-const Login = ({handleSubmit,err, handleChange, userid, password}) => {
+const Register = ({handleSubmit, handleChange, userid, password}) => {
   return (
     <form onSubmit={handleSubmit}>
       <label>
@@ -14,21 +14,18 @@ const Login = ({handleSubmit,err, handleChange, userid, password}) => {
         <input type="password" name="password" value={password} onChange={handleChange} />
       </label>
       <input type="submit" value="submit" />
-      {
-        <p>{err}</p>
-      }
     </form>
   )
 }
 
-class LoginContainer extends Component {
+class RegisterContainer extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
       userid: "",
-      password: "",
-      message: "",
-    };
+      password: ""
+    }
   }
 
   handleChange = e => {
@@ -40,38 +37,38 @@ class LoginContainer extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    axios.post("/auth/login", {
+    axios.post("/auth/register", {
       username: this.state.userid,
       password: this.state.password
     })
     .then(response => {
+      console.log(response);
       if (response.status === 200) {
-        this.props.handleSubmit(null, response.data.username);
+        this.props.handleSubmit(response.data.username);
       }
     })
     .catch(err => {
-      this.setState({
-        userid: "",
-        password: ""
-      })
-      this.props.handleSubmit('아이디 또는 비밀번호가 틀립니다.', null);
+      console.log(err);
     })
   }
 
   render() {
     return (
-      (!this.props.authorized)? 
-      <Login 
-        userid={this.state.userid}
-        err={this.props.err}
-        password={this.state.password}
-        handleChange={this.handleChange} 
-        handleSubmit={this.handleSubmit} 
-      />
-      :
-      <Redirect to="/"/>
+      <Fragment>
+        {
+           (!this.props.authorized)? 
+            <Register 
+            handleSubmit={this.handleSubmit} 
+            handleChange={this.handleChange}
+            userid={this.state.userid}
+            password={this.state.password}
+          /> : 
+          <Redirect to="/" />
+        }
+        
+      </Fragment>
     )
   }
 }
 
-export default LoginContainer;
+export default RegisterContainer;

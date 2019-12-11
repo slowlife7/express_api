@@ -11,6 +11,11 @@ const login = passport => {
   };
 };
 
+const logout = (req, res) => {
+  req.logout();
+  res.status(200).end();
+}
+
 const register = (passport, user) => {
   return (req, res, next) => {
     const username = req.body.username;
@@ -47,5 +52,6 @@ const register = (passport, user) => {
 
 module.exports = {
   login,
+  logout,
   register
 };

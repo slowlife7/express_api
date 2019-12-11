@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, Component } from 'react';
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,22 @@ const Title = styled.div``;
 const User = styled.div`
 `;
 
-const HeaderContainer = ({user}) => (
+const LogoutButton = styled.button``;
+
+const AuthUser = ({logout}) => (
+  <LogoutButton onClick={logout}>로그아웃</LogoutButton>
+)
+
+const UnAuthUser = () => {
+  return (
+    <Fragment>
+      <Link to="/login">로그인</Link>
+      <Link to="/signup">회원가입</Link>
+    </Fragment>
+  )
+}
+
+const HeaderContainer = ({authorized, logout}) => (
   <Header>
     <Menu>
 
@@ -28,15 +43,26 @@ const HeaderContainer = ({user}) => (
     </Title>
     <User>
       {
-        user.map((u, i) => (
-          <Link key={i} to={u.path}>{u.title}</Link>
-        ))
+        (authorized) ? <AuthUser logout={logout} /> :
+          <UnAuthUser />
       }
     </User>
   </Header>
 )
 
-export default HeaderContainer;
+class HeaderComponent extends Component {
+
+  render() {
+    return (
+      <HeaderContainer 
+        authorized={this.props.authorized}
+        logout={this.props.logout}
+      /> 
+    )
+  }
+}
+
+export default HeaderComponent;
 
 
 

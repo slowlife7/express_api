@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import { Navigator } from '../containers';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 const Section = styled.section`
   display: flex;
@@ -22,6 +22,7 @@ const SectionContainer = ({sidebar, routes}) => (
           />
         ))
       }
+      <Redirect from="*" to="/index"/>
     </Switch>
   </Section>
 )

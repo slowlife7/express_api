@@ -1,34 +1,98 @@
 import React, { Fragment, Component } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import * as Container from '../containers';
+import Axios from "axios";
 
 class WrapperComponent extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      userid: "",
-      password: "",
-      authorized: false
+      userinfo: {
+        userid: "",
+        err: "",
+        password: "",
+        authorized: false
+      },
+      sidebar: [ 
+        {
+          exact: true,
+          path: '/index',
+          main : () => <Container.Brief path={`/index`}/>
+        }
+      ]
     }
   }
 
-  handleSubmit = e => {
-    if ( e !== "") {
+  handleSubmit = (err, userid) => {
       this.setState({
-        authorized: true
+        userinfo: {
+          userid,
+          err,
+          authorized: (!err)? true : false
+        }
+      })
+  }
+
+  componentDidMount() {
+    const userinfo = JSON.parse(localStorage.getItem("userinfo"));
+    if (userinfo) {
+      this.setState({
+        userinfo
       })
     }
+
+    fetch("/category")
+    .then(response => response.json())
+    .then(json => {
+
+      const categories = json.map(item => {
+        return {
+          title: item.title,
+          path: `/category/${item.title}`,
+          main: () => <Container.PostList path={`/category/${item.title}`}/>
+        }
+      });
+
+      this.setState({
+        sidebar: this.state.sidebar.concat(categories)
+      })
+    })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.userinfo.userid !== this.state.userinfo.userid) {
+      localStorage.setItem("userinfo", JSON.stringify(this.state.userinfo));
+    }
+  }
+
+  handleLogout = (e) => {
+    Axios.get("/auth/logout")
+    .then(response => {  
+      const userinfo = {
+        userid: "",
+        authorized : false
+      }
+      this.setState({
+        userinfo
+      })
+      localStorage.clear();
+    })
+    .catch(err => {
+
+    })
+  }
+ 
   render() {
+   
     const loginRoute = {
       title: 'login',
       path: '/login',
       main: () => (
         <Container.Login 
           handleSubmit={this.handleSubmit} 
-          authorized={this.state.authorized}
+          authorized={this.state.userinfo.authorized}
+          err={this.state.userinfo.err}
         /> 
       )
     };
@@ -36,54 +100,26 @@ class WrapperComponent extends Component {
     const signupRoute = {
       title: 'signup',
       path: '/signup',
-      main: () => <div>Signup</div>
+      main: () => (
+        <Container.Register
+          handleSubmit={this.handleSubmit} 
+          authorized={this.state.userinfo.authorized}
+        /> 
+      )
     };
 
-    const logoutRoute = {
-      title: 'logout',
-      path: '/logout',
-      main: () => (
-        <div>Logout</div>
-      )
-    }
-   
     const routes = [
-        {
-          exact: true,
-          path: '/',
-          main: () => <div>Main</div>
-        },
-        {
-          title: 'html',
-          path: '/html',
-          main: () => <div>html</div>
-        },
-        {
-          title: 'css',
-          path: '/css',
-          main: () => <div>css</div>
-        },
-        {
-          title: 'javascript',
-          path: '/javascript',
-          main: () => <div>javascript</div>
-        },
+        ...this.state.sidebar,
         loginRoute,
-        signupRoute,
-        logoutRoute
+        signupRoute
     ];
 
-    console.log(this.state.userid);
     return (
       <Fragment>
         <Router>
           <Container.Wrapper>
-            <Container.Header 
-              user={
-                (this.state.authorized)? [logoutRoute] : [loginRoute, signupRoute]
-              }
-            />
-            <Container.Section sidebar={routes.slice(0,4)} routes={routes}/>
+            <Container.Header {...this.state.userinfo} logout={this.handleLogout}/>
+            <Container.Section sidebar={this.state.sidebar} routes={routes}/>
             <Container.Footer/>
           </Container.Wrapper>
         </Router>
