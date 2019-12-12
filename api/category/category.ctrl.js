@@ -1,4 +1,3 @@
-
 const Category = require("../../model/Category");
 
 const show = (req, res) => {
