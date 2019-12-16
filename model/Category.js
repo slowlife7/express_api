@@ -8,7 +8,9 @@ const Category = new Schema(
     posts: [{ type: Schema.Types.ObjectId, ref: "Post" }]
   },
   {
-    timestamps: { createdAt: "created_at" }
+    timestamps: { createdAt: "created_at" },
+    toJSON: { virtuals: true }, 
+    toObject: { virtuals: true } 
   }
 );
 

@@ -4,6 +4,7 @@ import * as Container from "../containers";
 import Posts from "../containers/Posts";
 import Axios from "axios";
 
+
 class WrapperComponent extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +36,7 @@ class WrapperComponent extends Component {
   };
 
   componentDidMount() {
-    const userinfo = JSON.parse(localStorage.getItem("userinfo"));
+    const userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
     if (userinfo) {
       this.setState({
         userinfo
@@ -61,7 +62,7 @@ class WrapperComponent extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.userinfo.userid !== this.state.userinfo.userid) {
-      localStorage.setItem("userinfo", JSON.stringify(this.state.userinfo));
+      sessionStorage.setItem("userinfo", JSON.stringify(this.state.userinfo));
     }
   }
 
@@ -74,7 +75,7 @@ class WrapperComponent extends Component {
             authorized: false
           }
         });
-        localStorage.clear();
+        sessionStorage.clear();
       })
       .catch(err => {});
   };

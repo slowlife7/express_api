@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 import PostItem from "./PostItem";
-
 const Flex = styled.div`
   display: flex;
   flex-direction: column;
