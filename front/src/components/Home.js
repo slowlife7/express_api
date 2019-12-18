@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import PostView from "../containers/PostView";
 import Axios from "axios";
+import PostHeader from "./PostHeader";
 
 const Flex = styled.div`
   display: flex;
@@ -9,6 +10,12 @@ const Flex = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-content: center;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-basis: 600px;
 `;
 
 class Home extends Component {
@@ -33,7 +40,14 @@ class Home extends Component {
 
   renderBriefs = briefs =>
     briefs &&
-    briefs.map((item, index) => <PostView key={index} {...item}></PostView>);
+    briefs.map((item, index) => 
+      <Container>
+        <PostHeader>
+          <span>{item._id}</span>
+        </PostHeader>
+        <PostView key={index} {...item}></PostView>
+      </Container>
+      );
 
   render() {
     const { briefs } = this.state;

@@ -27,7 +27,7 @@ class UserContainer extends Component {
     return (
       <Fragment>
         {value && value.loggedin ? (
-          <LogOut {...this.props}/>
+          <LogOut {...this.props} />
         ) : (
           <Fragment>
             <LoginLink to="/auth/login">Login</LoginLink>

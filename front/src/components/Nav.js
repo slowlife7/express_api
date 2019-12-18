@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Wrapper = styled.nav`
-  flex-basis: 150px;
+  flex-basis: 100px;
   flex-shrink: 0;
   flex: 1;
   border-right: 1px solid #cccccc;

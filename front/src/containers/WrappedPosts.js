@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from "react";
 import queryString from "query-string";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import Axios from "axios";
 import PostView from "./PostView";
 import Pagination from "../components/Pagination";
+import PostHeader from '../components/PostHeader';
+import styled from "styled-components";
 
 const calculatePagination = function(
   count_items,
@@ -29,6 +31,13 @@ const calculatePagination = function(
   };
   return page;
 };
+
+const WriteButton = styled(Link)`
+  text-decoration: none;
+  color: #000000;
+  padding: 0.3rem;
+  border: 1px solid #000000;
+`;
 
 class WrappedPosts extends Component {
   constructor(props) {
@@ -107,10 +116,18 @@ class WrappedPosts extends Component {
     return false;
   }
 
+  handleClick = (e) => {
+
+  }
+
   render() {
     return (
       <Fragment>
-        <PostView {...this.state} />
+        <PostHeader>
+          <span>{this.state._id}</span>
+          <WriteButton to="/post">write</WriteButton>
+        </PostHeader>
+        <PostView {...this.state } />
         <Pagination {...this.state} />
       </Fragment>
     );

@@ -7,17 +7,18 @@ import Login from "../containers/Login";
 import WrappedPosts from "../containers/WrappedPosts";
 
 const DummyRegister = () => <div>Register</div>;
+const WritePost = () => <div>post~~~~</div>;
 const Wrapper = styled.section`
   display: flex;
   width: 100%;
 `;
 
 const Main = styled.div`
-  flex: 4;
+  flex: 8;
 `;
 
 const Aside = styled.div`
-  flex: 1;
+  flex: 2;
 `;
 
 class Section extends Component {
@@ -33,6 +34,7 @@ class Section extends Component {
               path="/category/:title"
               render={props => <WrappedPosts {...props} />}
             />
+            <Route path="/post" render={WritePost} />
 
             <Route
               {...this.props}

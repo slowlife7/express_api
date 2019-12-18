@@ -8,17 +8,10 @@ const Flex = styled.div`
   flex-basis: 500px;
 `;
 
-const Title = styled.div`
-  flex-basis: 50px;
-`;
-
 const PostView = ({ _id, posts }) => {
   return (
     <Fragment>
       <Flex>
-        <Title>
-          <h2>{_id}</h2>
-        </Title>
         <ul>
           {posts &&
             posts.map((item, index) => (
