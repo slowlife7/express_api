@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Wrapper = styled.nav`
   flex-basis: 150px;
@@ -21,15 +22,34 @@ const Li = styled.li`
 `;
 
 class Nav extends Component {
-  renderNavigator() {
-    const { navItems } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = {
+      navItems: []
+    };
+  }
 
+  componentDidMount() {
+    axios
+      .get("/category")
+      .then(response => {
+        const { data } = response;
+        this.setState({
+          navItems: data
+        });
+      })
+      .catch(err => {});
+  }
+
+  renderNavigator() {
+    //const { navItems } = this.props;
+    const { navItems } = this.state;
     return (
       navItems &&
       navItems.map((item, index) => {
         return (
           <Li key={index}>
-            <NavLink to={item.path}>{item.title}</NavLink>
+            <NavLink to={`/category/${item.title}`}>{item.title}</NavLink>
           </Li>
         );
       })
