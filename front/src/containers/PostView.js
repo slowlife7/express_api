@@ -9,7 +9,6 @@ const Flex = styled.div`
 `;
 
 const PostView = ({ _id, posts }) => {
-  console.log(posts);
   return (
     <Fragment>
       <Flex>

@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 const Section = styled.section`
   display: flex;
+  min-height: 100vh;
 `;
 
 const Main = styled.main`
