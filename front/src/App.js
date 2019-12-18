@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "./components/Header";
 import Section from "./components/Section";
 import Footer from "./components/Footer";
+import { AuthProvider } from "./store/Authentication";
 
 const Flex = styled.div`
   display: flex;
@@ -27,11 +28,13 @@ const navItems = [
 
 function App() {
   return (
-    <Flex>
-      <Header />
-      <Section navItems={navItems}></Section>
-      <Footer />
-    </Flex>
+    <AuthProvider>
+      <Flex>
+        <Header />
+        <Section navItems={navItems}></Section>
+        <Footer />
+      </Flex>
+    </AuthProvider>
   );
 }
 

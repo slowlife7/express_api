@@ -4,12 +4,8 @@ import { Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import Nav from "./Nav";
 import Login from "../containers/Login";
-/*import Main from "./components/Main";
-import Aside from "./components/Aside"; */
 
 const DummyRegister = () => <div>Register</div>;
-
-//const Home = () => <div>Home</div>;
 
 const Wrapper = styled.section`
   display: flex;
@@ -33,6 +29,7 @@ class Section extends Component {
           <Switch>
             <Route path="/auth/login" render={props => <Login {...props} />} />
             <Route path="/auth/register" render={DummyRegister} />
+
             <Route
               {...this.props}
               exact

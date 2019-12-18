@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import { useAuth } from "../store/Authentication";
+import { authenticate } from "../services/authentication";
 
 const WrapperLogin = styled.div`
   position: relative;
@@ -68,6 +69,7 @@ const Login = props => {
               value={props.password}
               onChange={props.onChange}
             />
+            {props.error ? <p>{props.error}</p> : <p></p>}
             <LoginButton>Sign In </LoginButton>
           </form>
         </LoginContent>
@@ -82,7 +84,7 @@ class LoginContainer extends Component {
     this.state = {
       userid: "",
       password: "",
-      message: ""
+      error: ""
     };
   }
 
@@ -95,23 +97,27 @@ class LoginContainer extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    axios
-      .post("/auth/login", {
+    (async () => {
+      const { status, data, err } = await authenticate({
+        url: "/auth/login",
         username: this.state.userid,
         password: this.state.password
-      })
-      .then(response => {
-        if (response.status === 200) {
-          this.props.history.replace("/");
-        }
-      })
-      .catch(err => {
-        this.setState({
-          userid: "",
-          password: ""
-        });
-        //this.props.handleSubmit("아이디 또는 비밀번호가 틀립니다.", null);
       });
+
+      if (err || status !== 200) {
+        return this.setState({
+          userid: "",
+          password: "",
+          error: "비밀번호 또는 아이디가 틀립니다."
+        });
+      }
+
+      this.props.setValue({
+        userid: data.userid,
+        loggedin: true
+      });
+      this.props.history.replace("/");
+    })();
   };
 
   render() {
@@ -122,4 +128,4 @@ class LoginContainer extends Component {
   }
 }
 
-export default LoginContainer;
+export default useAuth(LoginContainer);
