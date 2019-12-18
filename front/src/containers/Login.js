@@ -117,13 +117,13 @@ class LoginContainer extends Component {
         loggedin: true
       });
 
-      /* localStorage.setItem(
+       localStorage.setItem(
         "userinfo",
         JSON.stringify({
           userid: data.userid,
           loggedin: true
         })
-      ); */
+      ); 
 
       this.props.history.replace("/");
     })();

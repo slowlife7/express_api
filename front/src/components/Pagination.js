@@ -9,11 +9,13 @@ const Container = styled.ul`
 `;
 
 const Box = styled.li`
-  
   border: 1px solid #cccccc;
   list-style: none;
+
+  & > a {
     text-decoration: none;
     padding: 1rem;
+    color: #000000;
   }
 `;
 
@@ -32,14 +34,14 @@ const Page = ({ no, to }) => {
 
 class Paging extends Component {
   renderPageBoxes = () => {
-    const { pageinfo } = this.props;
+    const { pageinfo, url } = this.props;
     const pageBoxes = [];
     pageinfo.prev &&
       pageBoxes.push(
         <Page
           key={pageinfo.prev}
           no={"<"}
-          to={`/category/javascript?skip=${pageinfo.prev}&limit=10`}
+          to={`${url}?skip=${pageinfo.prev}&limit=10`}
         />
       );
     for (let i = pageinfo.first; i <= pageinfo.last; i++) {
@@ -47,7 +49,7 @@ class Paging extends Component {
         <Page
           key={i}
           no={i}
-          to={`/category/javascript?skip=${i - 1}&limit=5`}
+          to={`${url}?skip=${i - 1}&limit=5`}
         />
       );
     }
@@ -56,7 +58,7 @@ class Paging extends Component {
         <Page
           key={pageinfo.prev}
           no={"<"}
-          to={`/category/javascript?skip=${pageinfo.next}&limit=10`}
+          to={`${url}?skip=${pageinfo.next}&limit=10`}
         />
       );
     return pageBoxes;

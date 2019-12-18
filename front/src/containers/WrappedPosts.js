@@ -46,16 +46,13 @@ class WrappedPosts extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const { match } = this.props;
     Axios.get(match.url)
       .then(response => {
         if (response.status === 200) {
           const { total, title, posts } = response.data;
-          console.log("total:", total);
           const { skip = 0, limit = 5 } = this.state.query;
           const pageinfo = calculatePagination(total, limit, 5, skip + 1);
-          console.log(pageinfo);
           this.setState({
             _id: title,
             url: match.url,
@@ -65,15 +62,13 @@ class WrappedPosts extends Component {
         }
       })
       .catch(err => {
-        console.log(err);
+        this.props.history.push('/auth/login');
       });
   }
 
   shouldComponentUpdate(prevProps, prevState) {
     const { location, match } = prevProps;
     const query = queryString.parse(location.search);
-
-    console.log(match.url);
 
     if (match.url !== this.state.url) {
       Axios.get(`${match.url}${location.search}`)

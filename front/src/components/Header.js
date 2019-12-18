@@ -15,7 +15,7 @@ class Header extends Component {
   render() {
     return (
       <Wrapper>
-        <UserContainer />
+        <UserContainer {...this.props}/>
       </Wrapper>
     );
   }
