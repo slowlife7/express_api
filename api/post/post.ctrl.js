@@ -62,24 +62,34 @@ const showCommentById = (req, res) => {
 };
 
 const create = (req, res) => {
-  const { category } = req.body;
+  const message = req.flash("message")[0] || {};
+  console.log("body:", message);
+  //const { category } = req.body;
+  const { category } = message;
   Category.exists({ title: category }).then(result => {
     if (!result) {
       return res.status(404).end();
     }
 
-    const post = new Post(req.body);
+    const post = new Post(message);
     post.save(err => {
       if (err) {
         return res.status(500).end();
       }
-      return res.status(201).json({
-        _id: post.id,
-        title: post.title,
-        content: post.content,
-        author: post.author,
-        category
-      });
+
+      Category.updateOne({ title: category }, { $push: { posts: post.id } })
+        .then(result => {
+          return res.status(201).json({
+            _id: post.id,
+            title: post.title,
+            content: post.content,
+            author: post.author,
+            category
+          });
+        })
+        .catch(err => {
+          return res.status(500).end();
+        });
     });
   });
 };

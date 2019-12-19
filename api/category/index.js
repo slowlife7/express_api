@@ -12,4 +12,5 @@ function isAuthenticated(req, res, next) {
 router.get("/", category.show);
 router.get("/:title", isAuthenticated, category.showByTitle);
 router.post("/", category.create);
+router.post("/:category/post", category.createPost);
 module.exports = router;

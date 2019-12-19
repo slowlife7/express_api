@@ -98,13 +98,16 @@ class LoginContainer extends Component {
     e.preventDefault();
 
     (async () => {
-      const { status, data, err } = await authenticate({
+      const res = await authenticate({
         url: "/auth/login",
         username: this.state.userid,
         password: this.state.password
       });
 
-      if (err || status !== 200) {
+      console.log("res:", res);
+      console.log("status:", res.status);
+
+      if (res.err || res.status !== 200) {
         return this.setState({
           userid: "",
           password: "",
@@ -113,17 +116,19 @@ class LoginContainer extends Component {
       }
 
       this.props.setValue({
-        userid: data.userid,
+        userid: res.data.username,
         loggedin: true
       });
 
-       localStorage.setItem(
+      //console.log("userid:", data.userid);
+
+      localStorage.setItem(
         "userinfo",
         JSON.stringify({
-          userid: data.userid,
+          userid: res.data.username,
           loggedin: true
         })
-      ); 
+      );
 
       this.props.history.replace("/");
     })();

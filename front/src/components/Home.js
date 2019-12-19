@@ -40,14 +40,14 @@ class Home extends Component {
 
   renderBriefs = briefs =>
     briefs &&
-    briefs.map((item, index) => 
-      <Container>
+    briefs.map((item, index) => (
+      <Container key={index}>
         <PostHeader>
           <span>{item._id}</span>
         </PostHeader>
-        <PostView key={index} {...item}></PostView>
+        <PostView {...item}></PostView>
       </Container>
-      );
+    ));
 
   render() {
     const { briefs } = this.state;

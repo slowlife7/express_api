@@ -2,7 +2,7 @@ import React, { Fragment, Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useAuth } from "../store/Authentication";
-import LogOut from './Logout';
+import LogOut from "./Logout";
 
 const LoginLink = styled(Link)`
   text-decoration: none;
@@ -19,6 +19,7 @@ const RegisterLink = styled(Link)`
 class UserContainer extends Component {
   componentDidMount() {
     const { setValue } = this.props;
+    console.log(localStorage.getItem("userinfo"));
     setValue(JSON.parse(localStorage.getItem("userinfo")));
   }
 

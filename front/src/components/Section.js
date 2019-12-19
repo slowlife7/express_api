@@ -4,10 +4,10 @@ import { Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import Nav from "./Nav";
 import Login from "../containers/Login";
+import WriteForm from "../containers/WriteForm";
 import WrappedPosts from "../containers/WrappedPosts";
 
 const DummyRegister = () => <div>Register</div>;
-const WritePost = () => <div>post~~~~</div>;
 const Wrapper = styled.section`
   display: flex;
   width: 100%;
@@ -30,11 +30,16 @@ class Section extends Component {
           <Switch>
             <Route path="/auth/login" render={props => <Login {...props} />} />
             <Route path="/auth/register" render={DummyRegister} />
+
+            <Route
+              path="/category/:title/post"
+              render={props => <WriteForm {...props} />}
+            />
+
             <Route
               path="/category/:title"
               render={props => <WrappedPosts {...props} />}
             />
-            <Route path="/post" render={WritePost} />
 
             <Route
               {...this.props}

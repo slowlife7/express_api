@@ -4,7 +4,7 @@ import { withRouter, Link } from "react-router-dom";
 import Axios from "axios";
 import PostView from "./PostView";
 import Pagination from "../components/Pagination";
-import PostHeader from '../components/PostHeader';
+import PostHeader from "../components/PostHeader";
 import styled from "styled-components";
 
 const calculatePagination = function(
@@ -71,7 +71,7 @@ class WrappedPosts extends Component {
         }
       })
       .catch(err => {
-        this.props.history.push('/auth/login');
+        this.props.history.push("/auth/login");
       });
   }
 
@@ -116,18 +116,17 @@ class WrappedPosts extends Component {
     return false;
   }
 
-  handleClick = (e) => {
-
-  }
+  handleClick = e => {};
 
   render() {
+    const { url } = this.props.match;
     return (
       <Fragment>
         <PostHeader>
           <span>{this.state._id}</span>
-          <WriteButton to="/post">write</WriteButton>
+          <WriteButton to={`${url}/post`}>write</WriteButton>
         </PostHeader>
-        <PostView {...this.state } />
+        <PostView {...this.state} />
         <Pagination {...this.state} />
       </Fragment>
     );

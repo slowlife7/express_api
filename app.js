@@ -2,6 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 const passport = require("passport");
+const flash = require("connect-flash");
 const index = require("./api/index");
 const auth = require("./api/authentication");
 const post = require("./api/post");
@@ -21,6 +22,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/auth", auth);

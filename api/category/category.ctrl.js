@@ -30,7 +30,7 @@ const showByTitle = (req, res) => {
     Category.findOne({ title }, { __v: false, __id: false }).populate({
       path: "posts",
       select: "-__v -comments -category -content",
-      options: { skip, limit, sort: { created_at: 1 } }
+      options: { skip, limit, sort: { created_at: -1 } }
     })
   ])
     .then(values => {
@@ -69,8 +69,22 @@ const create = (req, res, next) => {
   });
 };
 
+const createPost = (req, res, next) => {
+  const { category } = req.params;
+  console.log("category:", category);
+  console.log(req.body);
+
+  req.flash("message", {
+    category,
+    ...req.body
+  });
+  console.log("createpost");
+  res.redirect(307, "/post");
+};
+
 module.exports = {
   show,
   showByTitle,
-  create
+  create,
+  createPost
 };
