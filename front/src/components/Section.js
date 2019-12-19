@@ -5,6 +5,7 @@ import Home from "./Home";
 import Nav from "./Nav";
 import Login from "../containers/Login";
 import WriteForm from "../containers/WriteForm";
+import ReadForm from '../containers/ReadForm';
 import WrappedPosts from "../containers/WrappedPosts";
 
 const DummyRegister = () => <div>Register</div>;
@@ -34,6 +35,11 @@ class Section extends Component {
             <Route
               path="/category/:title/post"
               render={props => <WriteForm {...props} />}
+            />
+
+            <Route
+              path="/post/:id"
+              render={props => <ReadForm {...props} /> }
             />
 
             <Route

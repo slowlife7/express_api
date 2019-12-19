@@ -12,9 +12,12 @@ const TextArea = styled.textarea`
 class WriteForm extends Component {
   constructor(props) {
     super(props);
+
+    const { value } = this.props;
+
     this.state = {
       category: this.props.match.params.title,
-      author: this.props.value.userid,
+      author: value && value.userid,
       title: "",
       content: ""
     };
@@ -27,13 +30,12 @@ class WriteForm extends Component {
 
   handleConfirm = e => {
     e.preventDefault();
-    console.log(this.state);
-    console.log(this.props.match.url);
-
     axios
       .post(this.props.match.url, this.state)
       .then(response => {
-        console.log(response);
+        if (response.status === 201) {
+          this.props.history.push(`category/${this.state.category}`);
+        }
       })
       .catch(err => {
         console.log(err);

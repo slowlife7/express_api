@@ -40,8 +40,8 @@ class Home extends Component {
 
   renderBriefs = briefs =>
     briefs &&
-    briefs.map((item, index) => (
-      <Container key={index}>
+    briefs.map((item) => (
+      <Container key={item._id}>
         <PostHeader>
           <span>{item._id}</span>
         </PostHeader>

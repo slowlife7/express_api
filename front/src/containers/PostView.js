@@ -14,9 +14,9 @@ const PostView = ({ _id, posts }) => {
       <Flex>
         <ul>
           {posts &&
-            posts.map((item, index) => (
+            posts.map((item) => (
               <PostItem
-                key={index}
+                key={item._id}
                 _id={`/post/${item._id}`}
                 title={item.title}
                 author={item.author}
