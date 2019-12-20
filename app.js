@@ -2,6 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 const passport = require("passport");
+const fs = require("fs");
 const flash = require("connect-flash");
 const index = require("./api/index");
 const auth = require("./api/authentication");
@@ -23,12 +24,21 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(express.static(path.join(__dirname, "public")));
+
+if (process.env.DEVELOPMENT !== "true") {
+  app.use(express.static(path.join(__dirname, "front", "build")));
+}
 
 app.use("/auth", auth);
 app.use("/post", post);
 app.use("/category", category);
 app.use("/index", index);
+
+if (process.env.DEVELOPMENT !== "true") {
+  app.use("*", function(req, res, next) {
+    res.sendFile(path.join(__dirname, "front", "build", "index.html"));
+  });
+}
 
 const User = require("./model/User");
 passport.use(User.createStrategy());
