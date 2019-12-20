@@ -122,7 +122,7 @@ class LoginContainer extends Component {
 
       //console.log("userid:", data.userid);
 
-      localStorage.setItem(
+      sessionStorage.setItem(
         "userinfo",
         JSON.stringify({
           userid: res.data.username,

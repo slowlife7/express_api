@@ -19,8 +19,8 @@ const RegisterLink = styled(Link)`
 class UserContainer extends Component {
   componentDidMount() {
     const { setValue } = this.props;
-    console.log(localStorage.getItem("userinfo"));
-    setValue(JSON.parse(localStorage.getItem("userinfo")));
+    console.log(sessionStorage.getItem("userinfo"));
+    setValue(JSON.parse(sessionStorage.getItem("userinfo")));
   }
 
   render() {
