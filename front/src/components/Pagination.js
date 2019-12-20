@@ -35,30 +35,27 @@ const Page = ({ no, to }) => {
 class Paging extends Component {
   renderPageBoxes = () => {
     const { pageinfo, url } = this.props;
+    console.log("page:", pageinfo);
     const pageBoxes = [];
     pageinfo.prev &&
       pageBoxes.push(
         <Page
           key={pageinfo.prev}
           no={"<"}
-          to={`${url}?skip=${pageinfo.prev}&limit=10`}
+          to={`${url}?skip=${pageinfo.prev - 1}&limit=5`}
         />
       );
     for (let i = pageinfo.first; i <= pageinfo.last; i++) {
       pageBoxes.push(
-        <Page
-          key={i}
-          no={i}
-          to={`${url}?skip=${i - 1}&limit=5`}
-        />
+        <Page key={i} no={i} to={`${url}?skip=${i - 1}&limit=5`} />
       );
     }
     pageinfo.next &&
       pageBoxes.push(
         <Page
           key={pageinfo.prev}
-          no={"<"}
-          to={`${url}?skip=${pageinfo.next}&limit=10`}
+          no={">"}
+          to={`${url}?skip=${pageinfo.next - 1}&limit=5`}
         />
       );
     return pageBoxes;
