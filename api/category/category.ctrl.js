@@ -15,7 +15,7 @@ const showByTitle = (req, res) => {
     return res.status(400).end();
   }
 
-  let { skip = 0, limit = 5, sort } = req.query;
+  let { skip = 0, limit = 10, sort } = req.query;
   skip = Number(skip);
   limit = Number(limit);
 

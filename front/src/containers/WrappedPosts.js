@@ -60,7 +60,7 @@ class WrappedPosts extends Component {
       .then(response => {
         if (response.status === 200) {
           const { total, title, posts } = response.data;
-          const { skip = 0, limit = 5 } = queryString.parse(
+          const { skip = 0, limit = 10 } = queryString.parse(
             this.props.location.search
           );
 
@@ -93,7 +93,7 @@ class WrappedPosts extends Component {
         .then(response => {
           if (response.status === 200) {
             const { total, posts } = response.data;
-            const { skip = 0, limit = 5 } = queryString.parse(
+            const { skip = 0, limit = 10 } = queryString.parse(
               this.props.location.search
             );
 

@@ -6,6 +6,7 @@ import WrappedComment from "../containers/WrappedComment";
 
 const TextArea = styled.div`
   width: 98%;
+  height: 70vh;
   border: 1px solid #000000;
   margin: 5px 0;
   padding: 1%;
@@ -53,7 +54,7 @@ class ReadForm extends Component {
   }
 
   updateComment = comment => {
-    const { _id, value } = this.props;
+    const { value } = this.props;
 
     axios
       .post(`/post/${this.state._id}/comment`, {

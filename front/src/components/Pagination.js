@@ -42,12 +42,12 @@ class Paging extends Component {
         <Page
           key={pageinfo.prev}
           no={"<"}
-          to={`${url}?skip=${pageinfo.prev - 1}&limit=5`}
+          to={`${url}?skip=${pageinfo.prev - 1}&limit=10`}
         />
       );
     for (let i = pageinfo.first; i <= pageinfo.last; i++) {
       pageBoxes.push(
-        <Page key={i} no={i} to={`${url}?skip=${i - 1}&limit=5`} />
+        <Page key={i} no={i} to={`${url}?skip=${i - 1}&limit=10`} />
       );
     }
     pageinfo.next &&
@@ -55,7 +55,7 @@ class Paging extends Component {
         <Page
           key={pageinfo.prev}
           no={">"}
-          to={`${url}?skip=${pageinfo.next - 1}&limit=5`}
+          to={`${url}?skip=${pageinfo.next - 1}&limit=10`}
         />
       );
     return pageBoxes;
