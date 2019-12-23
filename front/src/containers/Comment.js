@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import Moment from "react-moment";
-
+import { useAuth } from "../store/Authentication";
 const Wrapper = styled.li`
   text-decoration: none;
   list-style: none;
@@ -23,6 +23,24 @@ class Comment extends Component {
     onRemove(comment._id);
   };
 
+  renderPrivateSection = () => {
+    const { author } = this.props.comment;
+    const { value } = this.props;
+
+    console.log("author:", author);
+    console.log("userid:", value.userid);
+
+    if (author === value.userid) {
+      console.log("same");
+      return (
+        <Fragment>
+          <button>수정</button>
+          <button onClick={this.handleRemove}>삭제</button>
+        </Fragment>
+      );
+    }
+  };
+
   render() {
     const { content, author, createdAt } = this.props.comment;
     return (
@@ -32,8 +50,7 @@ class Comment extends Component {
             <Content>{content}</Content>
             <Author>{author}</Author>
             <Created format="YYYY-MM-DD HH:mm">{createdAt}</Created>
-            <button>수정</button>
-            <button onClick={this.handleRemove}>삭제</button>
+            {this.renderPrivateSection()}
           </div>
         </Wrapper>
       </Fragment>
@@ -41,4 +58,4 @@ class Comment extends Component {
   }
 }
 
-export default Comment;
+export default useAuth(Comment);

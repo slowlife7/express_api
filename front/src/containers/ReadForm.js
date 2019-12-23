@@ -88,7 +88,6 @@ class ReadForm extends Component {
   };
 
   render() {
-    console.log(this.props);
     const { _id, title, content, category, author, comments } = this.state;
     return (
       <Fragment>
