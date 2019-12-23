@@ -4,7 +4,8 @@ mongoose.Promise = global.Promise;
 
 const db = mongoose.connect(`mongodb://rasgo.iptime.org:27017/express_api`, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 });
 
 app.listen(3001, () => {

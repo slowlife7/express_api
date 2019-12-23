@@ -96,12 +96,18 @@ const create = (req, res) => {
 
 const createComment = (req, res) => {
   const { post_id } = req.params;
-  Post.updateOne({ _id: post_id }, { $push: { comments: req.body } })
+  Post.findOneAndUpdate(
+    { _id: post_id },
+    { $addToSet: { comments: req.body } },
+    { new: true }
+  )
+    //Post.updateOne({ _id: post_id }, { $push: { comments: req.body } })
     .then(result => {
       if (!result) {
         return result.status(404).end();
       }
-      return res.status(201).json(req.body);
+      const added = result.comments.pop();
+      return res.status(201).json(added);
     })
     .catch(err => {
       if (err.name === "CastError") {
@@ -164,7 +170,11 @@ const destroy = (req, res) => {
 
 const destroyComment = (req, res) => {
   const { post_id, comment_id } = req.params;
-  Post.updateOne({ _id: post_id }, { $pull: { comments: comment_id } })
+  Post.updateOne(
+    { _id: post_id },
+    { $pull: { comments: { _id: comment_id } } },
+    { new: true }
+  )
     .then(result => {
       res.json({
         id: comment_id
