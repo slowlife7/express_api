@@ -44,8 +44,6 @@ class WrappedPosts extends Component {
   constructor(props) {
     super(props);
 
-    console.log("url:", this.props);
-
     this.state = {
       _id: "",
       url: "",

@@ -22,4 +22,18 @@ const logout = async req => {
   }
 };
 
-export { authenticate, logout };
+const register = async req => {
+  try {
+    return await axios.post(req.url, {
+      username: req.username,
+      password: req.password,
+      email: req.email
+    });
+  } catch (err) {
+    return {
+      err
+    };
+  }
+};
+
+export { authenticate, logout, register };

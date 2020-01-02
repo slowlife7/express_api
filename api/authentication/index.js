@@ -7,4 +7,6 @@ const passport = require("passport");
 router.post("/login", auth.login(passport));
 router.post("/register", auth.register(passport, User));
 router.get("/logout", auth.logout);
+router.get("/check", auth.check);
+
 module.exports = router;

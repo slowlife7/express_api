@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useAuth } from "../store/Authentication";
 import LogOut from "./Logout";
+import axiois from "axios";
 
 const LoginLink = styled(Link)`
   text-decoration: none;
@@ -21,6 +22,17 @@ class UserContainer extends Component {
     const { setValue } = this.props;
     console.log(sessionStorage.getItem("userinfo"));
     setValue(JSON.parse(sessionStorage.getItem("userinfo")));
+  }
+
+  componentDidUpdate() {
+    console.log("userupdate");
+
+    axiois.get("/auth/check").then(response => {
+      const { check } = response.data;
+      if (!check) {
+        sessionStorage.removeItem("userinfo");
+      }
+    });
   }
 
   render() {
